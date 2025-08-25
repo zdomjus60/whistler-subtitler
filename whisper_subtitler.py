@@ -1,5 +1,6 @@
 # Importa le librerie necessarie. Sostituisci `whisper` con `faster_whisper`
 import time
+import argparse
 from faster_whisper import WhisperModel
 from datetime import timedelta
 import subprocess
@@ -114,9 +115,9 @@ def write_srt(segments, srt_path):
 
     print(f"File SRT scritto in {srt_path}.")
 
-def main(video_path, srt_path, audio_path='audio.mp3'):
+def main(video_path, srt_path, language='en', model_name='small', audio_path='audio.mp3'):
     extract_audio(video_path, audio_path)
-    segments = transcribe_audio(audio_path, language='en')
+    segments = transcribe_audio(audio_path, language=language, model_name=model_name)
     if segments:
         write_srt(segments, srt_path)
     else:
@@ -125,12 +126,18 @@ def main(video_path, srt_path, audio_path='audio.mp3'):
     print("Pulizia completata.")
 
 if __name__ == "__main__":
-    video_path = 'The Most.mp4'
-    srt_path = 'The Most.srt'
+    parser = argparse.ArgumentParser(description="Transcribe audio from video and generate SRT subtitles.")
+    parser.add_argument("video_path", type=str, help="Path to the input video file.")
+    parser.add_argument("srt_path", type=str, help="Path to the output SRT subtitle file.")
+    parser.add_argument("--language", type=str, default="en", help="Language of the audio (e.g., 'en', 'it', 'fr'). Default is 'en'.")
+    parser.add_argument("--model", type=str, default="small", help="Whisper model to use (e.g., 'tiny', 'base', 'small', 'medium', 'large'). Default is 'small'.")
+
+    args = parser.parse_args()
+
     print("--- Avvio del processo di trascrizione ---")
     start_time = time.time()  # <--- Registra il tempo di inizio
 
-    main(video_path, srt_path)
+    main(args.video_path, args.srt_path, args.language, args.model)
     end_time = time.time()    # <--- Registra il tempo di fine
     duration = end_time - start_time
     print(f"--- Processo completato in {duration:.2f} secondi ---")

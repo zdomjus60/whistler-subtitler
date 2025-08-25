@@ -30,26 +30,33 @@ Before running the script, make sure you have the following software installed:
 
 ## Usage Guide
 
-1.  **Place the video file**: Put the video file you want to transcribe (e.g., `my_video.mp4`) in the same directory as the `whisper_subtitler.py` script.
+Run the script from your terminal, providing the path to your video file and the desired output SRT file, along with optional parameters for language and model.
 
-2.  **Configure the script**: Open the `whisper_subtitler.py` file with a text editor and modify the following lines at the end of the file to specify the names of your input and output files:
-    ```python
-    if __name__ == "__main__":
-        # Edit the name of your video file here
-        video_path = 'The Most.mp4'  
-        
-        # Edit the name of the SRT file that will be generated here
-        srt_path = 'The Most.srt'    
-        
-        # ... rest of the script ...
-    ```
+```bash
+python whisper_subtitler.py <video_path> <srt_path> [--language <lang_code>] [--model <model_name>]
+```
 
-3.  **Run the script**: Launch the script from your terminal.
+**Arguments:**
+
+*   `<video_path>`: **Required.** Path to the input video file (e.g., `my_video.mp4`).
+*   `<srt_path>`: **Required.** Path to the output SRT subtitle file (e.g., `my_video.srt`).
+*   `--language <lang_code>`: Optional. Language of the audio in the video (e.g., `en` for English, `it` for Italian, `fr` for French). Default is `en`.
+*   `--model <model_name>`: Optional. Faster-Whisper model to use (e.g., `tiny`, `base`, `small`, `medium`, `large`). Default is `small`.
+
+**Examples:**
+
+*   **Transcribe an English video to an English SRT:**
     ```bash
-    python whisper_subtitler.py
+    python whisper_subtitler.py "path/to/your/video.mp4" "output.srt" --language en
+    ```
+*   **Transcribe an Italian video using the 'medium' model:**
+    ```bash
+    python whisper_subtitler.py "path/to/your/italian_video.mp4" "italian_output.srt" --language it --model medium
     ```
 
-4.  **Result**: Upon completion, you will find a new `.srt` file (e.g., `The Most.srt`) in the directory, ready to be used with your video. The script will also take care of deleting the temporary audio file created during the process.
+**Result:**
+
+Upon completion, you will find the generated `.srt` file at the specified `srt_path`. The script will also take care of deleting the temporary audio file created during the process.
 
 ## How it Works
 
